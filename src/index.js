@@ -1,17 +1,32 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import ReactDOM from 'react-dom'; // For react 17
+// For react 18: import ReactDOM from 'react-dom/client';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import './index.css';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+import { FronteggProvider } from '@frontegg/react';
+
+const contextOptions = {
+  baseUrl: 'https://[YOUR_SUBDOMAIN].frontegg.com',
+  clientId: '[YOUR-CLIENT-ID]'
+};
+
+
+const authOptions = {
+ // keepSessionAlive: true // Uncomment this in order to maintain the session alive
+};
+
+// For react 18: 
+// const root = ReactDOM.createRoot(document.getElementById('root'));
+// root.render(
+ReactDOM.render(
+    <FronteggProvider 
+      contextOptions={contextOptions}
+      hostedLoginBox={true}
+      authOptions={authOptions}
+      entitlementsOptions={{ enabled: true }}
+    >
+        <App />
+    </FronteggProvider>,
+    document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
