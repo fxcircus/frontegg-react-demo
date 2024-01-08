@@ -5,7 +5,7 @@ And [Entitlements Integration (React)](https://docs.frontegg.com/docs/react-host
 
 ## How to run
 
-Open `index.js`, add your Client ID and API Key from `Frontegg Portal ➜ [ENVIRONMENT] ➜ Env Settings page`:
+- Open `index.js`, add your Client ID and API Key from `Frontegg Portal ➜ [ENVIRONMENT] ➜ Env Settings page`:
 
 ```
 const contextOptions = {
@@ -14,7 +14,7 @@ const contextOptions = {
 };
 ```
 
-Then Open `App.js`, replace `"test"` with the Feature name you set in the Frontegg Portal:
+- Open `App.js`, replace `"test"` with the Feature name you set in the Frontegg Portal:
 ```
 const { isEntitled: isFEntitled, justification: fJust } =
       useFeatureEntitlements("test");
