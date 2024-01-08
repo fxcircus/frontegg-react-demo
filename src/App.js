@@ -1,23 +1,31 @@
 import './App.css';
 import { useEffect } from 'react';
-import { AdminPortal, useAuth, useLoginWithRedirect, useAuthActions, useTenantsState, ContextHolder } from "@frontegg/react";
 import {
+  AdminPortal,
+  useAuth,
+  useLoginWithRedirect,
+  useAuthActions,
+  useTenantsState,
+  ContextHolder,
   useFeatureEntitlements,
   usePermissionEntitlements,
   useEntitlements,
   useIsAuthenticated,
 } from "@frontegg/react";
+
 function App() {
   const { user, isAuthenticated } = useAuth();
   const { switchTenant, requestHostedLoginAuthorizeV2 } = useAuthActions();
   const { tenants } = useTenantsState();  
   const loginWithRedirect = useLoginWithRedirect();
-  // Uncomment this to redirect to login automatically
+  
+  // Redirect from your app to the login box automatically
   useEffect(() => {
     if (!isAuthenticated) {
       loginWithRedirect();
     }
   }, [isAuthenticated, loginWithRedirect]);
+
   const showAdminPortal = () => {
     AdminPortal.show();
   };
@@ -82,11 +90,7 @@ function App() {
           
           <button onClick={() => logout()}>Logout</button>
           
-          {user.isSuperUser ? (
-            <div>hiding from superUser</div>
-          ): (
-            <button onClick={showAdminPortal}>Admin Portal</button>
-          )}
+          <button onClick={showAdminPortal}>Open Admin Portal</button>
           
           <div><br /><b>Active tenant id:</b></div>
           <textarea cols="35" onClick={(e) => {copyValue(e);}}>{user.tenantId}</textarea>
