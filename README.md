@@ -30,6 +30,5 @@ const { isEntitled: isFEntitled, justification: fJust } =
       featureKey: "test",
     });
 ```
-
-
-### `npm start`
+- Run `npm install` and then `npm start`
+- Open your browser and navigate to `http://localhost:3000`
