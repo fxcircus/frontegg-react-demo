@@ -27,13 +27,18 @@ function App() {
   const [showDecodedToken, setShowDecodedToken] = useState(false);
   const [cursorStyle, setCursorStyle] = useState('pointer');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
   const dropdownRef = useRef(null);
 
   const [selectedTenantId, setSelectedTenantId] = useState(user?.tenantId);
-  const [selectedTenantName, setSelectedTenantName] = useState(() => {
-    const tenant = tenants.find(t => t.tenantId === user?.tenantId);
-    return tenant ? tenant.name : '';
-  });
+  const [selectedTenantName, setSelectedTenantName] = useState('');
+
+  useEffect(() => {
+    if (tenants.length > 0 && selectedTenantId) {
+      const tenant = tenants.find(t => t.tenantId === selectedTenantId);
+      setSelectedTenantName(tenant ? tenant.name : tenants[0].name);
+    }
+  }, [tenants, selectedTenantId]);
 
   const handleTenantSwitch = (tenant) => {
     setSelectedTenantId(tenant.tenantId);
@@ -89,7 +94,9 @@ function App() {
   const copyValue = (value, e) => {
     navigator.clipboard.writeText(value);
     setCursorStyle('copy');
+    setToastMessage('Copied to clipboard!');
     setTimeout(() => {
+      setToastMessage('');
       setCursorStyle('pointer');
     }, 1000); 
   };
@@ -162,7 +169,7 @@ function App() {
             </div>
             <div className="button-container">
               <button className="action-button logout-button" onClick={logout}>Logout</button>
-              <p className="button-description">Log out of this session.</p>
+              <p className="button-description">End this user session.</p>
             </div>
           </div>
           
@@ -249,6 +256,13 @@ function App() {
               </div>
             </div>
           </div>
+
+          {/* Toast message */}
+          {toastMessage && (
+            <div className="toast">
+              {toastMessage}
+            </div>
+          )}
         </div>
       ) : (
         <div className="login-section">
