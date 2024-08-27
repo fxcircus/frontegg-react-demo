@@ -13,7 +13,7 @@ const contextOptions = {
 
 
 const authOptions = {
- // keepSessionAlive: true // Uncomment this in order to maintain the session alive
+ keepSessionAlive: true // refreshes the JWT once it reaches 80% expiration time
 };
 
 // For react 18: 
