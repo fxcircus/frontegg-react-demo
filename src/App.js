@@ -1,5 +1,5 @@
 import './App.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import {
   AdminPortal,
   useAuth,
@@ -26,6 +26,12 @@ function App() {
   const [isAdminPortalOpen, setIsAdminPortalOpen] = useState(false);
   const [showDecodedToken, setShowDecodedToken] = useState(false);
   const [cursorStyle, setCursorStyle] = useState('pointer');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const [selectedTenantName, setSelectedTenantName] = useState(
+    tenants.find(tenant => tenant.tenantId === user?.tenantId)?.name || 'Select Account'
+  );
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -46,6 +52,20 @@ function App() {
       window.removeEventListener("hashchange", handleHashChange);
     };
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
 
   const showAdminPortal = () => {
     AdminPortal.show();
@@ -86,10 +106,14 @@ function App() {
     );
   };
 
-  const switchTenantFromDropdown = (e) => {
-    const selectedIndex = e.target.selectedIndex;
-    const newTenantId = tenants[selectedIndex].tenantId;
-    switchTenant({ tenantId: newTenantId });
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleTenantSelection = (tenantId, tenantName) => {
+    switchTenant({ tenantId });
+    setSelectedTenantName(tenantName);
+    setIsDropdownOpen(false);
   };
 
   const toggleTokenView = () => {
@@ -115,26 +139,50 @@ function App() {
           </div>
 
           <div className="button-row">
-            {isSteppedUp ? (
-              <div className="stepped-up-message">You are STEPPED UP!</div>
-            ) : (
-              <button className="action-button" onClick={() => stepUp({ maxAge: MAX_AGE })}>
-                Step up MFA
-              </button>
-            )}
-            <button className="action-button" onClick={showAdminPortal}>Open Admin Portal</button>
-            <button className="action-button logout-button" onClick={logout}>Logout</button>
+            <div className="button-container">
+              {isSteppedUp ? (
+                <div className="stepped-up-message">You are STEPPED UP!</div>
+              ) : (
+                <button className="action-button" onClick={() => stepUp({ maxAge: MAX_AGE })}>
+                  Step up MFA
+                </button>
+              )}
+              <p className="button-description">
+                Additional verification step before granting access to restricted app areas.
+              </p>
+            </div>
+            <div className="button-container">
+              <button className="action-button" onClick={showAdminPortal}>Open Admin Portal</button>
+              <p className="button-description">
+                Fully self-served, comprehensive set of tools for user-management, authentication, security, and more for your end-users.
+              </p>
+            </div>
+            <div className="button-container">
+              <button className="action-button logout-button" onClick={logout}>Logout</button>
+              <p className="button-description">Log out of this session.</p>
+            </div>
           </div>
           
           <div className="account-switcher">
             <label className="account-switcher-label">Account Switcher</label>
-            <select className="tenant-selector" onChange={switchTenantFromDropdown}>
-              {tenants.map((option, index) => (
-                <option key={index} value={option.name} selected={option.tenantId === user?.tenantId}>
-                  {option.name}
-                </option>
-              ))}
-            </select>
+            <div className="custom-dropdown" ref={dropdownRef}>
+              <div className="dropdown-selected" onClick={toggleDropdown}>
+                {selectedTenantName}
+              </div>
+              {isDropdownOpen && (
+                <div className="dropdown-options">
+                  {tenants.map((tenant, index) => (
+                    <div
+                      key={index}
+                      className="dropdown-option"
+                      onClick={() => handleTenantSelection(tenant.tenantId, tenant.name)}
+                    >
+                      {tenant.name}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="info-layout">
