@@ -1,3 +1,4 @@
+/* Base styles */
 :root {
   --background-color: #fbfbfb;
   --primary-color: #42a5f5;
@@ -407,4 +408,68 @@ input:checked + .slider:before {
   font-size: 0.9rem;
   color: var(--secondary-color);
   font-weight: bold;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .info-layout {
+    flex-direction: column;
+  }
+
+  .left-column, .right-column {
+    margin-right: 0;
+    width: 100%;
+  }
+
+  .button-row {
+    flex-direction: column;
+    margin-top: 20px;
+  }
+
+  .button-row button {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+
+  .button-container {
+    width: 100%;
+  }
+
+  .dropdown-selected, .dropdown-options {
+    text-align: left;
+    padding-left: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .App {
+    padding: 10px;
+  }
+
+  .profile-pic {
+    width: 50px;
+    height: 50px;
+    margin-right: 8px;
+  }
+
+  .user-name {
+    font-size: 1.1em;
+  }
+
+  .intro-text {
+    font-size: 0.9rem;
+  }
+
+  .button-row button {
+    font-size: 0.8rem;
+    padding: 8px 10px;
+  }
+
+  .jwt {
+    font-size: 0.7rem;
+  }
+
+  .toggle-label, .info-label {
+    font-size: 0.8rem;
+  }
 }

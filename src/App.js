@@ -26,12 +26,11 @@ function App() {
   const [isAdminPortalOpen, setIsAdminPortalOpen] = useState(false);
   const [showDecodedToken, setShowDecodedToken] = useState(false);
   const [cursorStyle, setCursorStyle] = useState('pointer');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Updated variable name
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   const [selectedTenantId, setSelectedTenantId] = useState(user?.tenantId);
   const [selectedTenantName, setSelectedTenantName] = useState(() => {
-    // Find the tenant name based on the tenantId
     const tenant = tenants.find(t => t.tenantId === user?.tenantId);
     return tenant ? tenant.name : '';
   });
@@ -40,7 +39,7 @@ function App() {
     setSelectedTenantId(tenant.tenantId);
     setSelectedTenantName(tenant.name);
     switchTenant({ tenantId: tenant.tenantId });
-    setIsDropdownOpen(false); // Updated variable name
+    setIsDropdownOpen(false); 
   };
 
   useEffect(() => {
@@ -66,7 +65,7 @@ function App() {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false); // Updated variable name
+        setIsDropdownOpen(false);
       }
     };
 
@@ -92,7 +91,7 @@ function App() {
     setCursorStyle('copy');
     setTimeout(() => {
       setCursorStyle('pointer');
-    }, 1000); // Revert back after 1 second
+    }, 1000); 
   };
 
   const Entitlements = () => {
@@ -117,7 +116,7 @@ function App() {
   };
 
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen); // Updated variable name
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   const toggleTokenView = () => {
@@ -171,10 +170,10 @@ function App() {
             <label className="account-switcher-label">Account Switcher</label>
             <div className="custom-dropdown" onClick={toggleDropdown}>
               <div className="dropdown-selected">{selectedTenantName}</div>
-              {isDropdownOpen && ( // Updated variable name
+              {isDropdownOpen && ( 
                 <div className="dropdown-options">
                   {tenants
-                    .filter((tenant) => tenant.tenantId !== selectedTenantId) // Filter out the selected tenant
+                    .filter((tenant) => tenant.tenantId !== selectedTenantId) 
                     .map((option, index) => (
                       <div
                         key={index}
