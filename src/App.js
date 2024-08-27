@@ -26,12 +26,22 @@ function App() {
   const [isAdminPortalOpen, setIsAdminPortalOpen] = useState(false);
   const [showDecodedToken, setShowDecodedToken] = useState(false);
   const [cursorStyle, setCursorStyle] = useState('pointer');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Updated variable name
   const dropdownRef = useRef(null);
 
-  const [selectedTenantName, setSelectedTenantName] = useState(
-    tenants.find(tenant => tenant.tenantId === user?.tenantId)?.name || 'Select Account'
-  );
+  const [selectedTenantId, setSelectedTenantId] = useState(user?.tenantId);
+  const [selectedTenantName, setSelectedTenantName] = useState(() => {
+    // Find the tenant name based on the tenantId
+    const tenant = tenants.find(t => t.tenantId === user?.tenantId);
+    return tenant ? tenant.name : '';
+  });
+
+  const handleTenantSwitch = (tenant) => {
+    setSelectedTenantId(tenant.tenantId);
+    setSelectedTenantName(tenant.name);
+    switchTenant({ tenantId: tenant.tenantId });
+    setIsDropdownOpen(false); // Updated variable name
+  };
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -56,7 +66,7 @@ function App() {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false);
+        setIsDropdownOpen(false); // Updated variable name
       }
     };
 
@@ -107,13 +117,7 @@ function App() {
   };
 
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  const handleTenantSelection = (tenantId, tenantName) => {
-    switchTenant({ tenantId });
-    setSelectedTenantName(tenantName);
-    setIsDropdownOpen(false);
+    setIsDropdownOpen(!isDropdownOpen); // Updated variable name
   };
 
   const toggleTokenView = () => {
@@ -165,25 +169,26 @@ function App() {
           
           <div className="account-switcher">
             <label className="account-switcher-label">Account Switcher</label>
-            <div className="custom-dropdown" ref={dropdownRef}>
-              <div className="dropdown-selected" onClick={toggleDropdown}>
-                {selectedTenantName}
-              </div>
-              {isDropdownOpen && (
+            <div className="custom-dropdown" onClick={toggleDropdown}>
+              <div className="dropdown-selected">{selectedTenantName}</div>
+              {isDropdownOpen && ( // Updated variable name
                 <div className="dropdown-options">
-                  {tenants.map((tenant, index) => (
-                    <div
-                      key={index}
-                      className="dropdown-option"
-                      onClick={() => handleTenantSelection(tenant.tenantId, tenant.name)}
-                    >
-                      {tenant.name}
-                    </div>
-                  ))}
+                  {tenants
+                    .filter((tenant) => tenant.tenantId !== selectedTenantId) // Filter out the selected tenant
+                    .map((option, index) => (
+                      <div
+                        key={index}
+                        className="dropdown-option"
+                        onClick={() => handleTenantSwitch(option)}
+                      >
+                        {option.name}
+                      </div>
+                    ))}
                 </div>
               )}
             </div>
           </div>
+
 
           <div className="info-layout">
             <div className="left-column">

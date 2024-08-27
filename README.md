@@ -5,7 +5,7 @@ Reference documentation - [Hosted Login Integration (React)](https://docs.fronte
 ## How to run
 
 ### Frontegg account setup
-Signup for a Frontegg account
+Signup for a Frontegg account on one of our public regions:
 - EU ➜ https://portal.frontegg.com
 - US ➜ https://portal.us.frontegg.com
 - CA ➜ https://portal.ca.frontegg.com
@@ -15,9 +15,9 @@ Signup for a Frontegg account
 
 1. Clone the repo & install the dependencies
 ```
-git clone https://github.com/fxcircus/frontegg-react-demo.git leaddevnyc_frontegg_challenge
+git clone https://github.com/fxcircus/frontegg-react-demo.git frontegg_react_sample
 
-cd leaddevnyc_frontegg_challenge
+cd frontegg_react_sample
 
 npm i
 ```
