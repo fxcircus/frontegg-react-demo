@@ -8,7 +8,12 @@ import { FronteggProvider } from '@frontegg/react';
 
 const contextOptions = {
   baseUrl: 'https://[YOUR_SUBDOMAIN].frontegg.com',
-  clientId: '[YOUR-CLIENT-ID]'
+  clientId: '[YOUR-CLIENT-ID]',
+
+
+  tenantResolver: () => ({
+    tenant: new URLSearchParams(window.location.search).get("organization"),
+  }),
 };
 
 

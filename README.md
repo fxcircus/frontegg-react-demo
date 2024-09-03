@@ -11,6 +11,8 @@ Signup for a Frontegg account on one of our public regions:
 - CA ➜ https://portal.ca.frontegg.com
 - AU ➜ https://portal.au.frontegg.com
 
+Come back here once you complete the initial onboarding form
+
 ### Code setup
 
 1. Clone the repo & install the dependencies
@@ -30,5 +32,17 @@ const contextOptions = {
   clientId: '[YOUR-CLIENT-ID]'
 };
 ```
+Save the file
 
-- Open your browser and navigate to `http://localhost:3000`
+### Complete the integration
+
+Run the code from your terminal
+```
+npm start
+```
+
+Open your browser and navigate to `http://localhost:3000`
+
+Signup as a new user and explore the features Frontegg provides out of the box!
+![App Screenshot](./images/app_screenshot.png)
+

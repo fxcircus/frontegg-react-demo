@@ -49,7 +49,7 @@ function App() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      loginWithRedirect({ scope: 'openid email' });
+      loginWithRedirect();
     }
   }, [isAuthenticated, loginWithRedirect]);
 
@@ -102,6 +102,9 @@ function App() {
   };
 
   const Entitlements = () => {
+    const entitlementKey = "test";
+    const featureFlagKey = "feature01";
+
     const { isEntitled: isFEntitled } = useFeatureEntitlements("test");
     const { isEntitled: isPEntitled } = usePermissionEntitlements("test");
     const { isEntitled: isPEntitled2 } = useEntitlements({ permissionKey: "test" });
@@ -112,12 +115,12 @@ function App() {
 
     return (
       <div className="entitlements-section">
-        {isFEntitled && <div className="entitlement-item">A cool section</div>}
-        {isPEntitled && <div className="entitlement-item">An awesome section</div>}
-        {isPEntitled2 && <div className="entitlement-item">A mind-blowing section</div>}
-        {isFEntitled2 && <div className="entitlement-item">Another section</div>}
-        {isFEntitledFF && <div className="entitlement-item">Feature Flag on</div>}
-        {!hasEntitlement && <div className="entitlement-item">No entitlements</div>}
+        {isFEntitled && <div className="entitlement-item">Your plan includes the "{entitlementKey}" feature.</div>}
+        {isPEntitled && <div className="entitlement-item">Your plan includes the "{entitlementKey}" permission.</div>}
+        {isPEntitled2 && <div className="entitlement-item">You have a permission with the "{entitlementKey}" key.</div>}
+        {isFEntitled2 && <div className="entitlement-item">You have a feature with the "{entitlementKey}" key.</div>}
+        {isFEntitledFF && <div className="entitlement-item">Feature Flag "{featureFlagKey}" is on</div>}
+        {!hasEntitlement && <div className="entitlement-item">No plans \ features </div>}
       </div>
     );
   };
