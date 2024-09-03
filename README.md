@@ -6,10 +6,10 @@ Reference documentation - [Hosted Login Integration (React)](https://docs.fronte
 
 ### Frontegg account setup
 Signup for a Frontegg account on one of our public regions:
-- EU ➜ https://portal.frontegg.com
-- US ➜ https://portal.us.frontegg.com
-- CA ➜ https://portal.ca.frontegg.com
-- AU ➜ https://portal.au.frontegg.com
+- EU ➜ https://portal.frontegg.com/signup
+- US ➜ https://portal.us.frontegg.com/signup
+- CA ➜ https://portal.ca.frontegg.com/signup
+- AU ➜ https://portal.au.frontegg.com/signup
 
 Come back here once you complete the initial onboarding form
 
@@ -24,7 +24,12 @@ cd frontegg_react_sample
 npm i
 ```
 
-2. In your IDE, navigate to `src/index.js`. Add your Client ID and API Key from `Frontegg Portal ➜ [ENVIRONMENT] ➜ Env Settings page`:
+2. Navigate to `src/index.js` in your IDE or open it from the terminal
+```
+code .
+```
+
+ Add your Client ID and API Key from `Frontegg Portal ➜ [ENVIRONMENT] ➜ Env Settings page`:
 
 ```
 const contextOptions = {

@@ -7,8 +7,8 @@ import './index.css';
 import { FronteggProvider } from '@frontegg/react';
 
 const contextOptions = {
-  baseUrl: 'https://[YOUR_SUBDOMAIN].frontegg.com',
-  clientId: '[YOUR-CLIENT-ID]',
+  baseUrl: 'https://app-frtqiefxjqn9.frontegg.com',
+  clientId: '04017595-4e5d-4e7e-aff6-93c58d489d2f',
 
 
   tenantResolver: () => ({
