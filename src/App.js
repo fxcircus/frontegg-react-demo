@@ -49,7 +49,7 @@ function App() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      loginWithRedirect({ scope: 'openid email profile offline_access 937fe326-03b2-4a3e-a74b-25a97e34597d' });
+      loginWithRedirect({});
     }
   }, [isAuthenticated, loginWithRedirect]);
 
@@ -88,7 +88,7 @@ function App() {
 
   const logout = () => {
     const baseUrl = ContextHolder.getContext().baseUrl;
-    window.location.href = `${baseUrl}/oauth/logout?post_logout_redirect_uri=${window.location}&appId=4f908633-e047-47b3-aa4f-5f38620efb2a`;
+    window.location.href = `${baseUrl}/oauth/logout?post_logout_redirect_uri=${window.location}`;
   };
 
   const copyValue = (value, e) => {
@@ -105,21 +105,21 @@ function App() {
     const entitlementKey = "test";
     const featureFlagKey = "feature01";
 
-    const { isEntitled: isFEntitled } = useFeatureEntitlements("test");
-    const { isEntitled: isPEntitled } = usePermissionEntitlements("test");
-    const { isEntitled: isPEntitled2 } = useEntitlements({ permissionKey: "test" });
-    const { isEntitled: isFEntitled2 } = useEntitlements({ featureKey: "test" });
-    const { isEntitled: isFEntitledFF } = useEntitlements({ featureKey: "feature01" });
+    const { isEntitled: isFEntitled } = useFeatureEntitlements(entitlementKey);
+    const { isEntitled: isPEntitled } = usePermissionEntitlements(entitlementKey);
+    const { isEntitled: isPEntitled2 } = useEntitlements({ permissionKey: entitlementKey });
+    const { isEntitled: isFEntitled2 } = useEntitlements({ featureKey: entitlementKey });
+    const { isEntitled: isFEntitledFF } = useEntitlements({ featureKey: featureFlagKey });
 
     const hasEntitlement = isFEntitled || isPEntitled || isPEntitled2 || isFEntitled2;
 
     return (
       <div className="entitlements-section">
-        {isFEntitled && <div className="entitlement-item">Your plan includes the "{entitlementKey}" feature.</div>}
-        {isPEntitled && <div className="entitlement-item">Your plan includes the "{entitlementKey}" permission.</div>}
-        {isPEntitled2 && <div className="entitlement-item">You have a permission with the "{entitlementKey}" key.</div>}
-        {isFEntitled2 && <div className="entitlement-item">You have a feature with the "{entitlementKey}" key.</div>}
-        {isFEntitledFF && <div className="entitlement-item">Feature Flag "{featureFlagKey}" is on</div>}
+        {isFEntitled && <div className="entitlement-item">Your plan includes the <b>"{entitlementKey}"</b> feature.</div>}
+        {isPEntitled && <div className="entitlement-item">Your plan includes the <b>"{entitlementKey}"</b> permission.</div>}
+        {isPEntitled2 && <div className="entitlement-item">You have a permission with the <b>"{entitlementKey}"</b> key.</div>}
+        {isFEntitled2 && <div className="entitlement-item">You have a feature with the <b>"{entitlementKey}"</b> key.</div>}
+        {isFEntitledFF && <div className="entitlement-item">Feature Flag <b>"{featureFlagKey}"</b> is on</div>}
         {!hasEntitlement && <div className="entitlement-item">No plans \ features </div>}
       </div>
     );
@@ -138,7 +138,7 @@ function App() {
     if (typeof value === 'object' && value !== null) {
       return JSON.stringify(value, null, 2); // Format objects with indentation
     }
-    return JSON.stringify(value); // Strings, numbers, etc.
+    return JSON.stringify(value);
   };
 
   const entries = Object.entries(decodedToken);
@@ -196,7 +196,7 @@ function App() {
             </div>
             <div className="button-container">
               <button className="action-button logout-button" onClick={logout}>Logout</button>
-              <p className="button-description">End this user session.</p>
+              <p className="button-description">End user session.</p>
             </div>
           </div>
           
@@ -226,9 +226,8 @@ function App() {
             <div className="left-column">
               <div className="info-section">
                 <label className="info-label">User JWT</label>
-                <p className="info-description">This JWT token is issued by Frontegg for authenticated users. You can toggle between the encoded and decoded view.</p>
+                <p className="info-description">The JWT Frontegg issued for this user.</p>
                 
-                {/* Conditionally render decoded token or raw token */}
                 {showDecodedToken ? (
                   <div 
                     className="jwt-container"
@@ -252,7 +251,7 @@ function App() {
                     rows="10" 
                     value={user?.accessToken}
                     readOnly
-                    onClick={(e) => copyValue(user?.accessToken, e)}  // Copy the encoded token
+                    onClick={(e) => copyValue(user?.accessToken, e)}
                     style={{
                       cursor: cursorStyle,
                       backgroundColor: '#f5f5f5',
