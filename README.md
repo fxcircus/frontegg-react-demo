@@ -33,8 +33,14 @@ code .
 
 ```
 const contextOptions = {
-  baseUrl: 'https://[YOUR_SUBDOMAIN].frontegg.com',
-  clientId: '[YOUR-CLIENT-ID]'
+  baseUrl: 'https://[YOUR_SUBDOMAIN].frontegg.com', // Login URL (WITHOUT /oauth) from Frontegg Portal ➜ [ENVIRONMENT] ➜ Env Settings page
+  clientId: '[YOUR-CLIENT-ID]',                     // Client ID Frontegg Portal ➜ [ENVIRONMENT] ➜ Env Settings page
+  appId: '[APPLICATION_ID]',   // ID from Frontegg Portal ➜ [ENVIRONMENT] ➜ Applications ➜ Your application
+
+
+  tenantResolver: () => ({
+    tenant: new URLSearchParams(window.location.search).get("organization"),
+  }),
 };
 ```
 Save the file

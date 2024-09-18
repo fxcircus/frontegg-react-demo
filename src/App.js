@@ -49,7 +49,7 @@ function App() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      loginWithRedirect();
+      loginWithRedirect({ scope: 'openid email profile offline_access 937fe326-03b2-4a3e-a74b-25a97e34597d' });
     }
   }, [isAuthenticated, loginWithRedirect]);
 
@@ -88,7 +88,7 @@ function App() {
 
   const logout = () => {
     const baseUrl = ContextHolder.getContext().baseUrl;
-    window.location.href = `${baseUrl}/oauth/logout?post_logout_redirect_uri=${window.location}`;
+    window.location.href = `${baseUrl}/oauth/logout?post_logout_redirect_uri=${window.location}&appId=4f908633-e047-47b3-aa4f-5f38620efb2a`;
   };
 
   const copyValue = (value, e) => {
@@ -133,9 +133,33 @@ function App() {
     setShowDecodedToken(!showDecodedToken);
   };
 
+  const renderDecodedToken = (decodedToken) => {
+  const formatValue = (value) => {
+    if (typeof value === 'object' && value !== null) {
+      return JSON.stringify(value, null, 2); // Format objects with indentation
+    }
+    return JSON.stringify(value); // Strings, numbers, etc.
+  };
+
+  const entries = Object.entries(decodedToken);
+
+  return (
+    <pre style={{ textAlign: 'left', whiteSpace: 'pre-wrap', wordWrap: 'break-word', fontFamily: 'monospace' }}>
+      {'{'}
+      {entries.map(([key, value], index) => (
+        <div key={index} style={{ marginBottom: '5px' }}>
+          <span style={{ fontWeight: 'bold', color: '#42a5f5' }}>{key}:</span> {formatValue(value)}
+          {index < entries.length - 1 ? ',' : ''} {/* Add a comma if it's not the last entry */}
+        </div>
+      ))}
+      {'}'}
+    </pre>
+  );
+};
+
   const tokenContent = user && user.accessToken 
     ? showDecodedToken 
-      ? JSON.stringify(jwtDecode(user.accessToken), null, 2) 
+      ? renderDecodedToken(jwtDecode(user.accessToken)) 
       : user.accessToken 
     : '';
 
@@ -198,22 +222,49 @@ function App() {
             </div>
           </div>
 
-
           <div className="info-layout">
             <div className="left-column">
               <div className="info-section">
                 <label className="info-label">User JWT</label>
                 <p className="info-description">This JWT token is issued by Frontegg for authenticated users. You can toggle between the encoded and decoded view.</p>
                 
-                <textarea 
-                  className="jwt" 
-                  cols="70" 
-                  rows="10" 
-                  value={tokenContent}
-                  readOnly
-                  onClick={(e) => copyValue(tokenContent, e)}
-                  style={{ cursor: cursorStyle }}
-                />
+                {/* Conditionally render decoded token or raw token */}
+                {showDecodedToken ? (
+                  <div 
+                    className="jwt-container"
+                    onClick={(e) => copyValue(JSON.stringify(jwtDecode(user?.accessToken), null, 2), e)}  // Copy the decoded token
+                    style={{
+                      cursor: cursorStyle,
+                      backgroundColor: '#f5f5f5',
+                      paddingLeft: '10px',
+                      borderRadius: '4px',
+                      maxHeight: '265px',
+                      maxWidth: '350px',
+                      overflowY: 'scroll',
+                      border: '1px solid #d5dee2'
+                      }}>
+                    {tokenContent}
+                  </div>
+                ) : (
+                  <textarea 
+                    className="jwt" 
+                    cols="70" 
+                    rows="10" 
+                    value={user?.accessToken}
+                    readOnly
+                    onClick={(e) => copyValue(user?.accessToken, e)}  // Copy the encoded token
+                    style={{
+                      cursor: cursorStyle,
+                      backgroundColor: '#f5f5f5',
+                      padding: '10px',
+                      borderRadius: '4px',
+                      maxHeight: '300px',
+                      overflowY: 'scroll',
+                      border: '1px solid #d5dee2'
+                    }}
+                  />
+                )}
+
                 <div className="toggle-container">
                   <label className="toggle-label">Show Decoded Token</label>
                   <label className="switch">
